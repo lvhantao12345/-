@@ -80,14 +80,15 @@ def check():
                 log.write("域名" + str(index) + "检查不通过，新地址为"+str(dict_resolved[str(index)])+"\n")
         log.write("------------------------------------------------------------------------------------------\n")
         log.write("如下域名无法解析：\n"+str(ip_list_resolved_failed)+"\n------------------------------------------------------------------------------------------\n\n")
+
     return
 
 
 def init():
-    ip_list_resolved=[]
-    ip_list_resolved_failed=[]
-    #####列表初始化有问题，不能在一个进程内进行实时更新#######
+    ip_list_resolved.clear()
+    ip_list_resolved_failed.clear()
     return
+
 
 def main():
     __init__()
