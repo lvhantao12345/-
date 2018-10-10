@@ -1,5 +1,6 @@
 import socket
 import time
+import threading
 
 
 class DnsResolved:
@@ -11,6 +12,7 @@ class DnsResolved:
         self.ip_list_config = []
         self.ip_list_resolved = []
         self.ip_list_resolved_failed = []
+        self.command = ""
 
     def get_domain_config(self):
         config_file = "E:\python\config.txt"
@@ -85,15 +87,40 @@ class DnsResolved:
         self.get_domain_config()
         self.get_address_config()
         self.write_dict_config()
-        interval = input("请输入检查间隔...\n")
         print("程序已开始运行...")
-        while True:
+        while instance1.command != "exit":
             self.init()
             self.get_address_resolved()
             self.write_dict_resolved()
             self.check()
-            time.sleep(int(interval))
+            time.sleep(int(instance1.interval))
+        print("程序已经结束!")
 
 
-Instance1 = DnsResolved()
-Instance1.main()
+class MyThread:
+
+    def __init__(self):
+        self.command = ""
+        self.interval = 5
+        return
+
+    def time_interval_input(self):
+        self.interval = input("请输入检查间隔，默认为5秒...\n")
+
+    def command_input(self):
+        while self.command != "exit":
+            self.command = input("请输入exit退出！\n")
+
+    def main(self):
+        t_command = threading.Thread(target=self.command_input)
+        t_main = threading.Thread(target=instance0.main)
+        t_time_interval = threading.Thread(target=self.time_interval_input)
+        t_time_interval.start()
+        t_time_interval.join()
+        t_command.start()
+        t_main.start()
+
+
+instance0 = DnsResolved()
+instance1 = MyThread()
+instance1.main()
